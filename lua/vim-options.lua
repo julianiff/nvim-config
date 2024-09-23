@@ -46,7 +46,7 @@ local function run_vitest_on_current_file()
     vim.api.nvim_win_set_buf(0, buf)
 
     -- Run Vitest on the current file
-    local cmd = string.format("npx vitest %s", vim.fn.shellescape(current_file))
+    local cmd = string.format("npx vitest --coverage=false %s", vim.fn.shellescape(current_file))
 
     -- Use termopen to run the command in the new buffer
     vim.fn.termopen(cmd, {
@@ -63,5 +63,4 @@ local function run_vitest_on_current_file()
     vim.cmd("stopinsert")
 end
 
-vim.api.nvim_create_user_command("VitestCurrentFile", run_vitest_on_current_file, {})
 vim.keymap.set("n", "<leader>vt", run_vitest_on_current_file, { noremap = true, silent = true })
