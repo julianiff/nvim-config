@@ -37,15 +37,17 @@ return {
                 if is_vitest_test() then
                     run_vitest_on_current_file()
                 else
-                    -- Default neovim strategy for non-Vitest tests
-                    vim.cmd("botright new")
-                    vim.cmd("resize 20")
+                    -- For non-Vitest tests (including PHP)
+                    vim.cmd("vsplit")
+                    vim.cmd("vertical resize " .. math.floor(vim.o.columns / 3))
+                    local buf = vim.api.nvim_create_buf(false, true)
+                    vim.api.nvim_win_set_buf(0, buf)
                     vim.fn.termopen(cmd, {
                         on_exit = function()
-                            vim.cmd("bdelete!")
-                        end,
+                            vim.api.nvim_buf_set_keymap(buf, 'n', '<CR>', ':q<CR>', {noremap = true, silent = true})
+                            print("Press Enter to close this window")
+                        end
                     })
-                    vim.cmd("wincmd p")
                     vim.cmd("stopinsert")
                 end
             end,
