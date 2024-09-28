@@ -18,17 +18,17 @@ vim.wo.number = true
 
 vim.cmd("set number relativenumber")
 
--- Swisskeyboard override
-vim.api.nvim_set_keymap("i", "<M-9>", "}", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("i", "<M-8>", "{", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("i", "<M-7>", "|", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("i", "<M-6>", "]", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("i", "<M-5>", "[", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("i", "<M-3>", "#", { noremap = true, silent = true })
-
 -- Autosave after 1000ms (1 second) of inactivity in normal mode
 vim.opt.updatetime = 1000
 vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
     pattern = "*",
     command = "silent! update",
 })
+
+-- Ensure clipboard support is enabled
+vim.api.nvim_set_option("clipboard","unnamed")
+
+-- Map the special key sequence to copy to system clipboard
+vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]], { desc = "Copy to system clipboard" })
+vim.keymap.set("n", "<leader>Y", [["+Y]], { desc = "Copy line to system clipboard" })
+
