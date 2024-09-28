@@ -17,6 +17,18 @@ return {
 			},
 		})
 
-		vim.keymap.set("n", "<leader>gf", vim.lsp.buf.format, {})
+        local function organize_imports()
+            local params = {
+                command = "_typescript.organizeImports.ts",
+                arguments = {vim.api.nvim_buf_get_name(0)},
+                title = "Organize Imports"
+            }
+            vim.lsp.buf.execute_command(params)
+        end
+
+        vim.keymap.set("n", "<leader>gf", function ()
+            vim.lsp.buf.format()
+            organize_imports()
+        end, {})
 	end,
 }
