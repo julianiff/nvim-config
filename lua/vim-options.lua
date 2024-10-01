@@ -20,7 +20,6 @@ vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
 	pattern = "*",
 	command = "silent! update",
 })
-
 -- Map the special key sequence to copy to system clipboard
 vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]], { desc = "Copy to system clipboard" })
 vim.keymap.set("n", "<leader>Y", [["+Y]], { desc = "Copy line to system clipboard" })
@@ -41,7 +40,6 @@ vim.g.have_nerd_font = true
 vim.opt.number = true
 -- You can also add relative line numbers, to help with jumping.
 --  Experiment for yourself to see if you like it!
--- vim.opt.relativenumber = true
 vim.opt.showmode = false
 
 -- Sync clipboard between OS and Neovim.
@@ -94,9 +92,8 @@ vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 
 -- Diagnostic keymaps
 vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
-vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
-vim.keymap.set("n", "ö", vim.diagnostic.goto_prev, { desc = "Go to prev [D]iagnostic message"})
-vim.keymap.set("n", "ä", vim.diagnostic.goto_next, { desc = "Go to next [D]iagnostic message"})
+vim.keymap.set("n", "ö", vim.diagnostic.goto_prev, { desc = "Go to prev [D]iagnostic message" })
+vim.keymap.set("n", "ä", vim.diagnostic.goto_next, { desc = "Go to next [D]iagnostic message" })
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
@@ -105,7 +102,6 @@ vim.keymap.set("n", "ä", vim.diagnostic.goto_next, { desc = "Go to next [D]iagn
 -- NOTE: This won't work in all terminal emulators/tmux/etc. Try your own mapping
 -- or just use <C-\><C-n> to exit terminal mode
 vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
-
 
 -- Highlight when yanking (copying) text
 --  Try it with `yap` in normal mode
