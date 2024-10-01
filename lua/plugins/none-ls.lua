@@ -10,13 +10,12 @@ return {
 			sources = {
 				null_ls.builtins.formatting.stylua,
 				null_ls.builtins.formatting.prettier,
-                -- null_ls.builtins.diagnostics.phpcs,
-                null_ls.builtins.formatting.phpcbf,
+				null_ls.builtins.formatting.phpcbf,
 			},
 		})
 
-        vim.keymap.set("n", "<leader>gf", function ()
-            vim.lsp.buf.format()
-        end, {})
+		vim.keymap.set("n", "<leader>gf", function()
+			vim.lsp.buf.format()
+		end, {})
 	end,
 }
