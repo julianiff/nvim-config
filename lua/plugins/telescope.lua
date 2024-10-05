@@ -7,14 +7,18 @@ return {
 		tag = "0.1.5",
 		dependencies = { "nvim-lua/plenary.nvim", { "nvim-telescope/telescope-fzf-native.nvim", build = "make" } },
 		config = function()
-
 			require("telescope").setup({
-                defaults = {
-                    layout_strategy = "vertical",
+				defaults = {
+					layout_strategy = "vertical",
 					layout_config = {
 						horizontal = {
 							preview_top = true,
 						},
+					},
+				},
+				pickers = {
+					oldfiles = {
+						cwd_only = true,
 					},
 				},
 				extensions = {

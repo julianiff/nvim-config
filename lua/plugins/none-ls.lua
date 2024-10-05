@@ -12,8 +12,10 @@ return {
 				null_ls.builtins.formatting.prettier,
 				null_ls.builtins.formatting.phpcbf,
 				require("none-ls.diagnostics.eslint_d"),
+				null_ls.builtins.diagnostics.golangci_lint,
 			},
 		})
+
 		-- List of file types that ESLint should run on
 		local eslint_filetypes = {
 			"javascript",
@@ -33,7 +35,7 @@ return {
 			vim.fn.jobstart(cmd, {
 				on_exit = function(_, exit_code)
 					if exit_code == 0 then
-						vim.cmd("e")
+                    vim.cmd("e")
 						print("ESlint fix")
 					else
 						print("ESLint encountered an error")
