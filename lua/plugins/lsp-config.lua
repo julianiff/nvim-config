@@ -14,6 +14,7 @@ return {
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
 			local lspconfig = require("lspconfig")
 
+			-- Javascript related
 			local function organize_imports()
 				local params = {
 					command = "_typescript.organizeImports",
@@ -46,15 +47,48 @@ return {
 				end,
 			})
 			lspconfig.solargraph.setup({
+				on_attach = function(client, bufnr)
+					vim.api.nvim_create_autocmd("BufWritePre", {
+						buffer = bufnr,
+						callback = function()
+							vim.lsp.buf.format({ async = false })
+						end,
+					})
+				end,
 				capabilities = capabilities,
 			})
 			lspconfig.html.setup({
 				capabilities = capabilities,
+				on_attach = function(client, bufnr)
+					vim.api.nvim_create_autocmd("BufWritePre", {
+						buffer = bufnr,
+						callback = function()
+							vim.lsp.buf.format({ async = false })
+						end,
+					})
+				end,
 			})
 			lspconfig.lua_ls.setup({
+				on_attach = function(client, bufnr)
+					vim.api.nvim_create_autocmd("BufWritePre", {
+						buffer = bufnr,
+						callback = function()
+							vim.lsp.buf.format({ async = false })
+						end,
+					})
+				end,
 				capabilities = capabilities,
 			})
 			lspconfig.gopls.setup({
+				on_attach = function(client, bufnr)
+					vim.api.nvim_create_autocmd("BufWritePre", {
+						buffer = bufnr,
+						callback = function()
+							vim.lsp.buf.format({ async = false })
+						end,
+					})
+				end,
+
 				capabilities = capabilities,
 				settings = {
 					gopls = {
@@ -66,6 +100,14 @@ return {
 				},
 			})
 			lspconfig.phpactor.setup({
+				on_attach = function(client, bufnr)
+					vim.api.nvim_create_autocmd("BufWritePre", {
+						buffer = bufnr,
+						callback = function()
+							vim.lsp.buf.format({ async = false })
+						end,
+					})
+				end,
 				capabilities = capabilities,
 				init_options = {
 					["language_server_phpstan.enabled"] = false,

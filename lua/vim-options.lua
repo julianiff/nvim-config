@@ -14,16 +14,6 @@ vim.keymap.set("n", "<c-l>", ":wincmd l<CR>")
 
 vim.cmd("set number relativenumber")
 
--- Autosave after 1000ms (1 second) of inactivity in normal mode
-vim.opt.updatetime = 1000
-vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
-	pattern = "*",
-	command = "silent! update",
-})
--- Map the special key sequence to copy to system clipboard
-vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]], { desc = "Copy to system clipboard" })
-vim.keymap.set("n", "<leader>Y", [["+Y]], { desc = "Copy line to system clipboard" })
-
 -- Set <space> as the leader keyV
 -- See `:help mapleader`
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
@@ -31,6 +21,19 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 vim.g.have_nerd_font = true
 
+-- Map the special key sequence to copy to system clipboard
+vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]], { desc = "Copy to system clipboard" })
+vim.keymap.set("n", "<leader>Y", [["+Y]], { desc = "Copy line to system clipboard" })
+
+-- Map leader+w to save
+vim.keymap.set({ "n", "v" }, "<leader>w", ":w<CR>", { silent = true })
+
+-- Autosave after 1000ms (1 second) of inactivity in normal mode
+-- vim.opt.updatetime = 1000
+-- vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+-- 	pattern = "*",
+-- 	command = "silent! update",
+-- })
 -- [[ Setting options ]]
 -- See `:help vim.opt`
 -- NOTE: You can change these options as you wish!
