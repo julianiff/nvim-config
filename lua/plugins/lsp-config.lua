@@ -31,18 +31,16 @@ return {
 						description = "Organize Imports",
 					},
 				},
-				on_attach = function(client, bufnr)
-					vim.api.nvim_create_autocmd("BufWritePre", {
-						buffer = bufnr,
-						command = "OrganizeImports",
-					})
-				end,
 			})
 			lspconfig.eslint.setup({
 				on_attach = function(client, bufnr)
 					vim.api.nvim_create_autocmd("BufWritePre", {
 						buffer = bufnr,
-						command = "EslintFixAll",
+						callback = function()
+							vim.cmd("EslintFixAll")
+							vim.cmd("OrganizeImports")
+							vim.lsp.buf.format({ async = false })
+						end,
 					})
 				end,
 			})
