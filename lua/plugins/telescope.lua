@@ -9,7 +9,17 @@ return {
 		config = function()
 			require("telescope").setup({
 				defaults = {
-					layout_strategy = "vertical",
+					path_display = { "shorten" },
+					vimgrep_arguments = {
+						"rg",
+						"--color=never",
+						"--no-heading",
+						"--with-filename",
+						"--line-number",
+						"--column",
+						"--smart-case",
+						"--hidden",
+					},
 					layout_config = {
 						horizontal = {
 							preview_top = true,
