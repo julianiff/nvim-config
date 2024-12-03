@@ -5,7 +5,8 @@ vim.cmd("set shiftwidth=4")
 vim.g.background = "light"
 
 vim.opt.swapfile = false
-
+-- execute any code
+vim.opt.exrc = true
 -- Navigate vim panes better
 vim.keymap.set("n", "<c-k>", ":wincmd k<CR>")
 vim.keymap.set("n", "<c-j>", ":wincmd j<CR>")
@@ -15,8 +16,6 @@ vim.keymap.set("n", "<c-l>", ":wincmd l<CR>")
 vim.cmd("set number relativenumber")
 
 -- Set <space> as the leader keyV
--- See `:help mapleader`
---  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 vim.g.have_nerd_font = true
@@ -27,17 +26,6 @@ vim.keymap.set("n", "<leader>Y", [["+Y]], { desc = "Copy line to system clipboar
 
 -- Map leader+w to save
 vim.keymap.set({ "n", "v" }, "<leader>w", ":w<CR>", { silent = true })
-
--- Autosave after 1000ms (1 second) of inactivity in normal mode
--- vim.opt.updatetime = 1000
--- vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
--- 	pattern = "*",
--- 	command = "silent! update",
--- })
--- [[ Setting options ]]
--- See `:help vim.opt`
--- NOTE: You can change these options as you wish!
---  For more options, you can see `:help option-list`
 
 -- Make line numbers default
 vim.opt.number = true
