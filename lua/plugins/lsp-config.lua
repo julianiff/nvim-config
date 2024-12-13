@@ -39,7 +39,7 @@ return {
 						callback = function()
 							vim.cmd("EslintFixAll")
 							vim.cmd("OrganizeImports")
-							vim.lsp.buf.format({ async = false })
+							vim.lsp.buf.format({ async = false, timeout_ms = 5000 })
 						end,
 					})
 				end,

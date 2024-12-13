@@ -24,6 +24,11 @@ vim.g.have_nerd_font = true
 vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]], { desc = "Copy to system clipboard" })
 vim.keymap.set("n", "<leader>Y", [["+Y]], { desc = "Copy line to system clipboard" })
 
+-- Navigate Quicklist
+vim.keymap.set({ "n", "i" }, "œ", "<M-q>", { remap = true })
+vim.keymap.set("n", "<leader>j", ":cnext<CR>")
+vim.keymap.set("n", "<leader>k", ":cprev<CR>")
+
 -- Map leader+w to save
 vim.keymap.set({ "n", "v" }, "<leader>w", ":w<CR>", { silent = true })
 
