@@ -9,9 +9,10 @@ return {
 	{ "williamboman/mason-lspconfig.nvim", lazy = false, opts = { auto_install = true } },
 	{
 		"neovim/nvim-lspconfig",
+		dependencies = { "saghen/blink.cmp" },
 		lazy = false,
 		config = function()
-			local capabilities = require("cmp_nvim_lsp").default_capabilities()
+			local capabilities = require("blink.cmp").get_lsp_capabilities()
 			local lspconfig = require("lspconfig")
 
 			-- Javascript related
@@ -23,6 +24,7 @@ return {
 				}
 				vim.lsp.buf.execute_command(params)
 			end
+
 			lspconfig.ts_ls.setup({
 				capabilities = capabilities,
 				commands = {
@@ -126,6 +128,17 @@ return {
 						},
 					},
 				},
+			})
+			lspconfig.volar.setup({
+				on_attach = function(client, bufnr)
+					vim.api.nvim_create_autocmd("BufWritePre", {
+						buffer = bufnr,
+						callback = function()
+							vim.lsp.buf.format({ async = false })
+						end,
+					})
+				end,
+				capabilities = capabilities,
 			})
 
 			vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
