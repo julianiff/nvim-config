@@ -129,17 +129,17 @@ return {
 					},
 				},
 			})
-			lspconfig.volar.setup({
-				on_attach = function(client, bufnr)
-					vim.api.nvim_create_autocmd("BufWritePre", {
-						buffer = bufnr,
-						callback = function()
-							vim.lsp.buf.format({ async = false })
-						end,
-					})
-				end,
-				capabilities = capabilities,
-			})
+			--	lspconfig.volar.setup({
+			--		on_attach = function(client, bufnr)
+			--			vim.api.nvim_create_autocmd("BufWritePre", {
+			--				buffer = bufnr,
+			--				callback = function()
+			--					vim.lsp.buf.format({ async = false })
+			--				end,
+			--			})
+			--		end,
+			--		capabilities = capabilities,
+			--	})
 
 			vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
 			vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
