@@ -9,7 +9,7 @@ return {
 
 		-- Basic test strategy for non-specialized files
 		vim.g["test#strategy"] = "neovim"
-		vim.g["test#neovim#term_position"] = "vert leftabove"
+		vim.g["test#neovim#term_position"] = "vert belowright"
 		vim.g["test#neovim#term_width"] = 80
 	end,
 }

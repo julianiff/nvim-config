@@ -69,7 +69,23 @@ return {
 				end,
 			})
 			lspconfig.lua_ls.setup({
-				on_attach = function(client, bufnr)
+				settings = {
+					Lua = {
+						diagnostics = {
+							globals = { "vim" },
+						},
+						runtime = {
+							version = "LuaJIT",
+						},
+						workspace = {
+							checkThirdParty = false,
+							library = {
+								vim.env.VIMRUNTIME,
+							},
+						},
+					},
+				},
+				on_attach = function(_, bufnr)
 					vim.api.nvim_create_autocmd("BufWritePre", {
 						buffer = bufnr,
 						callback = function()
