@@ -7,6 +7,7 @@ vim.g.background = "light"
 vim.opt.swapfile = false
 -- execute any code
 vim.opt.exrc = true
+
 -- Navigate vim panes better
 vim.keymap.set("n", "<c-k>", ":wincmd k<CR>")
 vim.keymap.set("n", "<c-j>", ":wincmd j<CR>")
@@ -24,10 +25,19 @@ vim.g.have_nerd_font = true
 vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]], { desc = "Copy to system clipboard" })
 vim.keymap.set("n", "<leader>Y", [["+Y]], { desc = "Copy line to system clipboard" })
 
--- Navigate Quicklist
+-- Quicklist keys
 vim.keymap.set({ "n", "i" }, "œ", "<M-q>", { remap = true })
 vim.keymap.set("n", "<leader>j", ":cnext<CR>")
 vim.keymap.set("n", "<leader>k", ":cprev<CR>")
+
+-- Add current line to Quickfix list
+vim.keymap.set("n", "<leader>qa", function()
+	vim.cmd('caddexpr expand("%") . ":" . line(".") . ":" . getline(".")')
+end)
+
+-- Toggle Quickfix window
+vim.keymap.set("n", "<leader>q", ":copen<CR>")
+vim.keymap.set("n", "<leader>qc", ":cclose<CR>")
 
 -- Map leader+w to save
 vim.keymap.set({ "n", "v" }, "<leader>w", ":w<CR>", { silent = true })
