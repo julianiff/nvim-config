@@ -25,19 +25,17 @@ vim.g.have_nerd_font = true
 vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]], { desc = "Copy to system clipboard" })
 vim.keymap.set("n", "<leader>Y", [["+Y]], { desc = "Copy line to system clipboard" })
 
--- Quicklist keys
-vim.keymap.set({ "n", "i" }, "œ", "<M-q>", { remap = true })
+-- Quicklist keymaps
+vim.keymap.set("n", "<leader>q", ":copen<CR>", { desc = "[Q]uickfix list open" })
+vim.keymap.set("n", "<leader>qc", ":cclose<CR>", { desc = "[Q]uickfix list [c]lose" })
+vim.keymap.set("n", "<leader>qr", ":cexpr []<CR>", { desc = "[Q]uickfix list [r]eset" })
+vim.keymap.set("n", "<leader>qa", function()
+	vim.cmd('caddexpr expand("%") . ":" . line(".") . ":" . getline(".")')
+end, { desc = "[Q]uickfix [a]dd current line" })
 vim.keymap.set("n", "<leader>j", ":cnext<CR>")
 vim.keymap.set("n", "<leader>k", ":cprev<CR>")
 
--- Add current line to Quickfix list
-vim.keymap.set("n", "<leader>qa", function()
-	vim.cmd('caddexpr expand("%") . ":" . line(".") . ":" . getline(".")')
-end)
-
--- Toggle Quickfix window
-vim.keymap.set("n", "<leader>q", ":copen<CR>")
-vim.keymap.set("n", "<leader>qc", ":cclose<CR>")
+vim.keymap.set({ "n", "i" }, "œ", "<M-q>", { remap = true })
 
 -- Map leader+w to save
 vim.keymap.set({ "n", "v" }, "<leader>w", ":w<CR>", { silent = true })
@@ -99,7 +97,7 @@ vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 vim.api.nvim_set_keymap("i", "jk", "<Esc>", { noremap = true, silent = true })
 
 -- Diagnostic keymaps
-vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
+vim.keymap.set("n", "<leader>dq", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
 vim.keymap.set("n", "ö", vim.diagnostic.goto_prev, { desc = "Go to prev [D]iagnostic message" })
 vim.keymap.set("n", "ä", vim.diagnostic.goto_next, { desc = "Go to next [D]iagnostic message" })
 
