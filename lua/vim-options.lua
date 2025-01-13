@@ -4,6 +4,9 @@ vim.cmd("set softtabstop=4")
 vim.cmd("set shiftwidth=4")
 vim.g.background = "light"
 
+vim.opt.title = true
+vim.opt.titlestring = '%{fnamemodify(getcwd(), ":t")}'
+
 vim.opt.swapfile = false
 -- execute any code
 vim.opt.exrc = true
