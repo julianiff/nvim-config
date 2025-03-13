@@ -132,6 +132,7 @@ return {
 				settings = {
 					phpactor = {
 						completion = {
+							prefix_includes_dollar = false,
 							insertUseDeclaration = false,
 						},
 						codeTransform = {
