@@ -5,7 +5,6 @@ end
 -- Function to check if current file is a Vitest test
 local function is_vitest_test()
 	local file_content = vim.fn.join(vim.fn.readfile(vim.fn.expand("%")), "\n")
-	print("is it smth?")
 	return file_content:match("from%s+'vitest'") ~= nil
 end
 

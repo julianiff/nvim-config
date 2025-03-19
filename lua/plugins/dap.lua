@@ -17,25 +17,10 @@ return {
 			-- Setup UI before configuring dap-go
 			dapui.setup()
 
-			-- Configure dap-go with explicit configuration
-			require("dap-go").setup({
-				delve = {
-					path = "/opt/homebrew/bin/dlv",
-					initialize_timeout_sec = 20,
-					port = "${port}",
-					args = { "--check-go-version=false" },
-				},
-				-- Debug settings
-				dap_configurations = {
-					{
-						type = "go",
-						name = "Debug Package",
-						request = "launch",
-						program = "${workspaceFolder}",
-						buildFlags = "-gcflags='all=-N -l'",
-					},
-				},
-			})
+			dap.adapters.php = {
+				type = "executable",
+				command = "php-debug-adapter",
+			}
 
 			-- Your existing keymaps
 			vim.keymap.set("n", "<space>b", dap.toggle_breakpoint)
