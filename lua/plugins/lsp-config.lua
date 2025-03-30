@@ -127,7 +127,10 @@ return {
 				capabilities = capabilities,
 				init_options = {
 					["language_server_phpstan.enabled"] = false,
-					["language_server_psalm.enabled"] = false,
+					["language_server_psalm.enabled"] = true,
+					["prophecy.enabled"] = true,
+					["phpunit.enabled"] = true,
+					["language_server_completion.trim_leading_dollar"] = true,
 				},
 				settings = {
 					phpactor = {

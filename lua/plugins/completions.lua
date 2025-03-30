@@ -2,7 +2,7 @@ return {
 	{
 		"saghen/blink.cmp",
 		dependencies = { "rafamadriz/friendly-snippets", "L3MON4D3/LuaSnip" },
-		version = "v0.*",
+		version = "*",
 
 		opts = {
 			snippets = {
@@ -28,7 +28,15 @@ return {
 				nerd_font_variant = "mono",
 			},
 
-			signature = { enabled = true },
+			signature = {
+				enabled = true,
+				padding = {
+					top = 2,
+					bottom = 2,
+					left = 4,
+					right = 4,
+				},
+			},
 		},
 		opts_extend = { "sources.default" },
 	},
