@@ -1,17 +1,36 @@
 return {
 	{
-		"williamboman/mason.nvim",
+		"neovim/nvim-lspconfig",
+		dependencies = {
+			"saghen/blink.cmp",
+			"williamboman/mason-lspconfig.nvim",
+			"williamboman/mason.nvim",
+			"nvim-telescope/telescope.nvim",
+		},
 		lazy = false,
 		config = function()
 			require("mason").setup()
-		end,
-	},
-	{ "williamboman/mason-lspconfig.nvim", lazy = false, opts = { auto_install = true } },
-	{
-		"neovim/nvim-lspconfig",
-		dependencies = { "saghen/blink.cmp" },
-		lazy = false,
-		config = function()
+			require("mason-lspconfig").setup({
+				ensure_installed = {
+					"lua_ls",
+					"ts_ls",
+					"eslint",
+					"phpactor",
+				},
+				auto_install = true,
+				handlers = {
+					function(server)
+						require("lspconfig")[server].setup({
+							capabilities = vim.tbl_deep_extend(
+								"force",
+								vim.lsp.protocol.make_client_capabilities(),
+								require("blink.cmp").get_lsp_capabilities()
+							),
+						})
+					end,
+				},
+			})
+
 			local capabilities = require("blink.cmp").get_lsp_capabilities()
 			local lspconfig = require("lspconfig")
 
@@ -46,28 +65,7 @@ return {
 					})
 				end,
 			})
-			lspconfig.solargraph.setup({
-				on_attach = function(client, bufnr)
-					vim.api.nvim_create_autocmd("BufWritePre", {
-						buffer = bufnr,
-						callback = function()
-							vim.lsp.buf.format({ async = false })
-						end,
-					})
-				end,
-				capabilities = capabilities,
-			})
-			lspconfig.html.setup({
-				capabilities = capabilities,
-				on_attach = function(client, bufnr)
-					vim.api.nvim_create_autocmd("BufWritePre", {
-						buffer = bufnr,
-						callback = function()
-							vim.lsp.buf.format({ async = false })
-						end,
-					})
-				end,
-			})
+
 			lspconfig.lua_ls.setup({
 				settings = {
 					Lua = {
@@ -85,45 +83,9 @@ return {
 						},
 					},
 				},
-				on_attach = function(_, bufnr)
-					vim.api.nvim_create_autocmd("BufWritePre", {
-						buffer = bufnr,
-						callback = function()
-							vim.lsp.buf.format({ async = false })
-						end,
-					})
-				end,
 				capabilities = capabilities,
-			})
-			lspconfig.gopls.setup({
-				on_attach = function(client, bufnr)
-					vim.api.nvim_create_autocmd("BufWritePre", {
-						buffer = bufnr,
-						callback = function()
-							vim.lsp.buf.format({ async = false })
-						end,
-					})
-				end,
-
-				capabilities = capabilities,
-				settings = {
-					gopls = {
-						analyses = {
-							unusedparams = true,
-						},
-						staticcheck = true,
-					},
-				},
 			})
 			lspconfig.phpactor.setup({
-				on_attach = function(client, bufnr)
-					vim.api.nvim_create_autocmd("BufWritePre", {
-						buffer = bufnr,
-						callback = function()
-							vim.lsp.buf.format({ async = false })
-						end,
-					})
-				end,
 				capabilities = capabilities,
 				init_options = {
 					["language_server_phpstan.enabled"] = false,
@@ -148,17 +110,6 @@ return {
 					},
 				},
 			})
-			--	lspconfig.volar.setup({
-			--		on_attach = function(client, bufnr)
-			--			vim.api.nvim_create_autocmd("BufWritePre", {
-			--				buffer = bufnr,
-			--				callback = function()
-			--					vim.lsp.buf.format({ async = false })
-			--				end,
-			--			})
-			--		end,
-			--		capabilities = capabilities,
-			--	})
 
 			vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
 			vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
@@ -166,5 +117,32 @@ return {
 			vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, {})
 			vim.keymap.set("n", "<leader>r", vim.lsp.buf.rename, {})
 		end,
+	},
+	{
+		"folke/lazydev.nvim",
+		dependencies = {
+			"bilal2453/luvit-meta",
+		},
+		ft = "lua",
+		opts = {
+			library = {
+				{ path = "luvit-meta/library", words = { "vim%.uv" } },
+			},
+		},
+	},
+	{
+		"saghen/blink.cmp",
+		opts = {
+			sources = {
+				default = { "lazydev", "lsp", "path", "snippets", "buffer" },
+				providers = {
+					lazydev = {
+						name = "LazyDev",
+						module = "lazydev.integrations.blink",
+						score_offset = 100,
+					},
+				},
+			},
+		},
 	},
 }
