@@ -66,25 +66,6 @@ return {
 				end,
 			})
 
-			lspconfig.lua_ls.setup({
-				settings = {
-					Lua = {
-						diagnostics = {
-							globals = { "vim" },
-						},
-						runtime = {
-							version = "LuaJIT",
-						},
-						workspace = {
-							checkThirdParty = false,
-							library = {
-								vim.env.VIMRUNTIME,
-							},
-						},
-					},
-				},
-				capabilities = capabilities,
-			})
 			lspconfig.phpactor.setup({
 				capabilities = capabilities,
 				init_options = {
