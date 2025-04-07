@@ -7,7 +7,7 @@ return {
 			"williamboman/mason-lspconfig.nvim",
 			"hrsh7th/nvim-cmp",
 			"hrsh7th/cmp-nvim-lsp",
-			-- "j-hui/fidget.nvim",
+			"j-hui/fidget.nvim",
 		},
 		lazy = false,
 		config = function()
@@ -36,7 +36,7 @@ return {
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
 			local lspconfig = require("lspconfig")
 
-			-- require("fidget").setup({})
+			require("fidget").setup({})
 
 			-- Javascript related
 			local function organize_imports()
