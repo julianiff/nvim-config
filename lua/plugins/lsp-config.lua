@@ -2,10 +2,12 @@ return {
 	{
 		"neovim/nvim-lspconfig",
 		dependencies = {
-			"saghen/blink.cmp",
-			"williamboman/mason-lspconfig.nvim",
-			"williamboman/mason.nvim",
 			"nvim-telescope/telescope.nvim",
+			"williamboman/mason.nvim",
+			"williamboman/mason-lspconfig.nvim",
+			"hrsh7th/nvim-cmp",
+			"hrsh7th/cmp-nvim-lsp",
+			-- "j-hui/fidget.nvim",
 		},
 		lazy = false,
 		config = function()
@@ -24,15 +26,17 @@ return {
 							capabilities = vim.tbl_deep_extend(
 								"force",
 								vim.lsp.protocol.make_client_capabilities(),
-								require("blink.cmp").get_lsp_capabilities()
+								require("cmp_nvim_lsp").default_capabilities()
 							),
 						})
 					end,
 				},
 			})
 
-			local capabilities = require("blink.cmp").get_lsp_capabilities()
+			local capabilities = require("cmp_nvim_lsp").default_capabilities()
 			local lspconfig = require("lspconfig")
+
+			-- require("fidget").setup({})
 
 			-- Javascript related
 			local function organize_imports()
@@ -111,19 +115,14 @@ return {
 			},
 		},
 	},
-	{
-		"saghen/blink.cmp",
-		opts = {
-			sources = {
-				default = { "lazydev", "lsp", "path", "snippets", "buffer" },
-				providers = {
-					lazydev = {
-						name = "LazyDev",
-						module = "lazydev.integrations.blink",
-						score_offset = 100,
-					},
-				},
-			},
-		},
+	{ -- optional cmp completion source for require statements and module annotations
+		"hrsh7th/nvim-cmp",
+		opts = function(_, opts)
+			opts.sources = opts.sources or {}
+			table.insert(opts.sources, {
+				name = "lazydev",
+				group_index = 0, -- set group index to 0 to skip loading LuaLS completions
+			})
+		end,
 	},
 }
