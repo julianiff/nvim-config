@@ -42,9 +42,18 @@ return {
 			pcall(require("telescope").load_extension, "ui-select")
 
 			local builtin = require("telescope.builtin")
-			vim.keymap.set("n", "<C-p>", builtin.find_files, {})
-			vim.keymap.set("n", "<leader>fg", builtin.live_grep, {})
-			vim.keymap.set("n", "<leader><leader>", builtin.oldfiles, {})
+			local find_files = function()
+				builtin.find_files({
+					hidden = true,
+					no_ignore = true,
+				})
+			end
+
+			vim.keymap.set("n", "<C-p>", find_files, { desc = "Telescope - Files" })
+			vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "Telescope - Content" })
+			vim.keymap.set("n", "<leader>S", builtin.grep_string, { desc = "Telescope - Word under cursor" })
+			vim.keymap.set("n", "<leader>bb", builtin.buffers, { desc = "Telescope - Buffers" })
+			vim.keymap.set("n", "<leader><leader>", builtin.oldfiles, { desc = "Telescope - recently opened files" })
 		end,
 	},
 }
