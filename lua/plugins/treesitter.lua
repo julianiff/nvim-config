@@ -7,6 +7,10 @@ return {
 			"nvim-treesitter/nvim-treesitter-textobjects",
 		},
 		config = function()
+			require("treesitter-context").setup({
+				enable = false,
+			})
+
 			local config = require("nvim-treesitter.configs")
 			config.setup({
 				modules = {},

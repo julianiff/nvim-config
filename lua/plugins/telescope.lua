@@ -8,7 +8,7 @@ return {
 		dependencies = { "nvim-lua/plenary.nvim", { "nvim-telescope/telescope-fzf-native.nvim", build = "make" } },
 		config = function()
 			require("telescope").setup({
-				defaults = {
+				defaults = require("telescope.themes").get_ivy({
 					path_display = { "shorten" },
 					vimgrep_arguments = {
 						"rg",
@@ -21,19 +21,12 @@ return {
 						"--hidden",
 					},
 					layout_config = {
-						horizontal = {
-							preview_top = true,
-						},
+						height = 40,
 					},
-				},
+				}),
 				pickers = {
 					oldfiles = {
 						cwd_only = true,
-					},
-				},
-				extensions = {
-					["ui-select"] = {
-						require("telescope.themes").get_dropdown({}),
 					},
 				},
 			})
@@ -48,12 +41,21 @@ return {
 					no_ignore = true,
 				})
 			end
+			local diagnostics = function()
+				builtin.diagnostics({
+					line_width = 2,
+					bufnr = 0,
+					path_display = { "hidden" }, -- This hides the file paths completely
+				})
+			end
 
 			vim.keymap.set("n", "<C-p>", find_files, { desc = "Telescope - Files" })
 			vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "Telescope - Content" })
 			vim.keymap.set("n", "<leader>S", builtin.grep_string, { desc = "Telescope - Word under cursor" })
 			vim.keymap.set("n", "<leader>bb", builtin.buffers, { desc = "Telescope - Buffers" })
 			vim.keymap.set("n", "<leader><leader>", builtin.oldfiles, { desc = "Telescope - recently opened files" })
+			vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "Telescope help tags" })
+			vim.keymap.set("n", "<leader>fd", diagnostics, { desc = "Telescope - diagnostics" })
 		end,
 	},
 }
