@@ -15,10 +15,10 @@ vim.opt.exrc = true
 vim.keymap.set("x", "p", 'p:let @+=@0<CR>:let @"=@0<CR>', { silent = true })
 
 -- Navigate vim panes better
-vim.keymap.set("n", "<c-k>", ":wincmd k<CR>")
-vim.keymap.set("n", "<c-j>", ":wincmd j<CR>")
-vim.keymap.set("n", "<c-h>", ":wincmd h<CR>")
-vim.keymap.set("n", "<c-l>", ":wincmd l<CR>")
+vim.keymap.set("n", "<c-h>", "<C-w>h")
+vim.keymap.set("n", "<c-j>", "<C-w>j")
+vim.keymap.set("n", "<c-k>", "<C-w>k")
+vim.keymap.set("n", "<c-l>", "<C-w>l")
 
 -- Center after half jump down / up
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
@@ -95,7 +95,7 @@ vim.opt.inccommand = "split"
 vim.opt.cursorline = true
 
 -- Minimal number of screen lines to keep above and below the cursor.
-vim.opt.scrolloff = 10
+vim.opt.scrolloff = 20
 
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`

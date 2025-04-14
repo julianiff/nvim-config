@@ -45,13 +45,13 @@ return {
 				builtin.diagnostics({
 					line_width = 2,
 					bufnr = 0,
-					path_display = { "hidden" }, -- This hides the file paths completely
+					path_display = { "hidden" },
 				})
 			end
 
 			vim.keymap.set("n", "<C-p>", find_files, { desc = "Telescope - Files" })
 			vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "Telescope - Content" })
-			vim.keymap.set("n", "<leader>S", builtin.grep_string, { desc = "Telescope - Word under cursor" })
+			vim.keymap.set("n", "<leader>s", builtin.grep_string, { desc = "Telescope - Word under cursor" })
 			vim.keymap.set("n", "<leader>bb", builtin.buffers, { desc = "Telescope - Buffers" })
 			vim.keymap.set("n", "<leader><leader>", builtin.oldfiles, { desc = "Telescope - recently opened files" })
 			vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "Telescope help tags" })
