@@ -153,4 +153,4 @@ local function compare_to_clipboard()
 	))
 end
 
-vim.keymap.set("x", "<Space>d", compare_to_clipboard)
+vim.keymap.set("x", "<leader>d", compare_to_clipboard)

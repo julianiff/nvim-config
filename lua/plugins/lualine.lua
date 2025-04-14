@@ -6,11 +6,10 @@ return {
 			component_separators = "|",
 			section_separators = "",
 			icons_enabled = false,
-			theme = "zenbones",
+			theme = "rosebones",
 		},
 		sections = {
 			lualine_c = { { "filename", path = 1 } },
-			-- Add this section to show macro recording status
 			lualine_x = {
 				{
 					function()
@@ -20,7 +19,7 @@ return {
 						end
 						return ""
 					end,
-					color = { fg = "#f6c177" }, -- Red text for visibility
+					color = { fg = "#9ccfd8" },
 				},
 			},
 		},
