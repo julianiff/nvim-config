@@ -4,41 +4,23 @@ return {
 		dependencies = {
 			"nvim-telescope/telescope.nvim",
 			"williamboman/mason.nvim",
-			"williamboman/mason-lspconfig.nvim",
 			"hrsh7th/nvim-cmp",
 			"hrsh7th/cmp-nvim-lsp",
 			"j-hui/fidget.nvim",
 		},
 		lazy = false,
 		config = function()
-			require("mason").setup()
-			require("mason-lspconfig").setup({
-				ensure_installed = {
-					"lua_ls",
-					"ts_ls",
-					"eslint",
-					"phpactor",
-				},
-				auto_install = true,
-				handlers = {
-					function(server)
-						require("lspconfig")[server].setup({
-							capabilities = vim.tbl_deep_extend(
-								"force",
-								vim.lsp.protocol.make_client_capabilities(),
-								require("cmp_nvim_lsp").default_capabilities()
-							),
-						})
-					end,
-				},
-			})
+			-- Setup fidget first
+			require("fidget").setup({})
 
+			-- Setup mason
+			require("mason").setup()
+
+			-- Get capabilities for LSP
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
 			local lspconfig = require("lspconfig")
 
-			require("fidget").setup({})
-
-			-- Javascript related
+			-- Javascript organize imports function
 			local function organize_imports()
 				local params = {
 					command = "_typescript.organizeImports",
@@ -47,6 +29,21 @@ return {
 				}
 				vim.lsp.buf.execute_command(params)
 			end
+
+			-- Manual server configurations
+			lspconfig.lua_ls.setup({
+				capabilities = capabilities,
+				settings = {
+					Lua = {
+						diagnostics = {
+							globals = { "vim" },
+						},
+						workspace = {
+							library = vim.api.nvim_get_runtime_file("", true),
+						},
+					},
+				},
+			})
 
 			lspconfig.ts_ls.setup({
 				capabilities = capabilities,
@@ -57,7 +54,9 @@ return {
 					},
 				},
 			})
+
 			lspconfig.eslint.setup({
+				capabilities = capabilities,
 				on_attach = function(client, bufnr)
 					vim.api.nvim_create_autocmd("BufWritePre", {
 						buffer = bufnr,
@@ -96,6 +95,7 @@ return {
 				},
 			})
 
+			-- LSP keymaps
 			vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
 			vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
 			vim.keymap.set("n", "<leader>gr", vim.lsp.buf.references, {})
