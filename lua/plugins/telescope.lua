@@ -37,8 +37,8 @@ return {
 			local builtin = require("telescope.builtin")
 			local find_files = function()
 				builtin.find_files({
-					hidden = true,
-					no_ignore = true,
+					hidden = false,
+					no_ignore = false,
 				})
 			end
 			local diagnostics = function()
@@ -49,6 +49,9 @@ return {
 				})
 			end
 
+			local refactoring = function()
+				require("telescope").extensions.refactoring.refactors()
+			end
 			require("telescope").load_extension("refactoring")
 
 			vim.keymap.set("n", "<C-p>", find_files, { desc = "Telescope - Files" })
@@ -58,9 +61,7 @@ return {
 			vim.keymap.set("n", "<leader><leader>", builtin.oldfiles, { desc = "Telescope - recently opened files" })
 			vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "Telescope help tags" })
 			vim.keymap.set("n", "<leader>fd", diagnostics, { desc = "Telescope - diagnostics" })
-			vim.keymap.set({ "n", "x" }, "<leader>rr", function()
-				require("telescope").extensions.refactoring.refactors()
-			end, { desc = "Telescope - refactoring" })
+			vim.keymap.set({ "n", "x" }, "<leader>rr", refactoring, { desc = "Telescope - refactoring" })
 		end,
 	},
 }
