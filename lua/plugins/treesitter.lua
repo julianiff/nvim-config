@@ -34,6 +34,15 @@ return {
 				highlight = { enable = true },
 				indent = { enable = true },
 				textobjects = {
+					lsp_interop = {
+						enable = true,
+						border = "none",
+						floating_preview_opts = {},
+						peek_definition_code = {
+							["<leader>df"] = "@function.outer",
+							["<leader>dF"] = "@class.outer",
+						},
+					},
 					select = {
 						enable = true,
 						lookahead = true, -- Automatically jump forward to textobj
@@ -81,7 +90,6 @@ return {
 						},
 					},
 
-					-- Movement between textobjects
 					move = {
 						enable = true,
 						set_jumps = true, -- Add to jumplist
