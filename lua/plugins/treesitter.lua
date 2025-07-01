@@ -83,7 +83,7 @@ return {
 							["is"] = "@statement.inner",
 
 							-- Assignments
-							["ar"] = "@assignment.rhs", -- Around assignment
+							["arh"] = "@assignment.rhs", -- Around assignment
 							["alh"] = "@assignment.lhs", -- Around assignment
 							["a="] = "@assignment.outer", -- Around assignment
 							["i="] = "@assignment.inner", -- Inside assignment
