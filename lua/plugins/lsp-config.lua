@@ -44,7 +44,108 @@ return {
 					},
 				},
 			})
-
+			-- Go Language Server setup
+			lspconfig.gopls.setup({
+				capabilities = capabilities,
+				settings = {
+					gopls = {
+						-- Enable all analyses
+						analyses = {
+							unusedparams = true,
+							shadow = true,
+							fieldalignment = true,
+							nilness = true,
+							unusedwrite = true,
+							useany = true,
+						},
+						-- Enable experimental features
+						experimentalPostfixCompletions = true,
+						-- Use gofumpt for formatting
+						gofumpt = true,
+						-- Enable staticcheck
+						staticcheck = true,
+						-- Enable vulncheck
+						vulncheck = "Imports",
+						-- Semantic tokens
+						semanticTokens = true,
+						-- Codelenses
+						codelenses = {
+							gc_details = false,
+							generate = true,
+							regenerate_cgo = true,
+							run_govulncheck = true,
+							test = true,
+							tidy = true,
+							upgrade_dependency = true,
+							vendor = true,
+						},
+						-- Hints
+						hints = {
+							assignVariableTypes = true,
+							compositeLiteralFields = true,
+							compositeLiteralTypes = true,
+							constantValues = true,
+							functionTypeParameters = true,
+							parameterNames = true,
+							rangeVariableTypes = true,
+						},
+					},
+				},
+				on_attach = function(client, bufnr)
+					-- Auto-format on save for Go files
+					vim.api.nvim_create_autocmd("BufWritePre", {
+						buffer = bufnr,
+						callback = function()
+							-- Organize imports
+							local params = vim.lsp.util.make_range_params()
+							params.context = { only = { "source.organizeImports" } }
+							local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, 3000)
+							for _, res in pairs(result or {}) do
+								for _, r in pairs(res.result or {}) do
+									if r.edit then
+										vim.lsp.util.apply_workspace_edit(r.edit, "utf-8")
+									else
+										vim.lsp.buf.execute_command(r.command)
+									end
+								end
+							end
+							-- Format
+							vim.lsp.buf.format({ async = false, timeout_ms = 5000 })
+						end,
+					})
+				end,
+			})
+			-- Zig Language Server setup
+			lspconfig.zls.setup({
+				capabilities = capabilities,
+				settings = {
+					zls = {
+						-- Enable semantic tokens for better syntax highlighting
+						enable_semantic_tokens = true,
+						-- Enable snippets completion
+						enable_snippets = true,
+						-- Enable argument placeholders
+						enable_argument_placeholders = true,
+						-- Enable auto-fixing of imports
+						enable_autofix = true,
+						-- Enable inlay hints
+						enable_inlay_hints = true,
+						-- Warn about style issues
+						warn_style = true,
+						-- Highlight global variables
+						highlight_global_var_declarations = true,
+					},
+				},
+				on_attach = function(client, bufnr)
+					-- Optional: Add auto-formatting on save for Zig files
+					vim.api.nvim_create_autocmd("BufWritePre", {
+						buffer = bufnr,
+						callback = function()
+							vim.lsp.buf.format({ async = false, timeout_ms = 5000 })
+						end,
+					})
+				end,
+			})
 			lspconfig.ts_ls.setup({
 				capabilities = capabilities,
 				commands = {
