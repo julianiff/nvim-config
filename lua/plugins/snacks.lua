@@ -37,7 +37,6 @@ return {
 			callback = function()
 				-- Create some toggle mappings
 				Snacks.toggle.line_number():map("<leader>ul")
-				Snacks.toggle.treesitter():map("<leader>uT")
 				Snacks.toggle
 					.option("background", { off = "light", on = "dark", name = "Dark Background" })
 					:map("<leader>ub")
