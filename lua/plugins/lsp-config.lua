@@ -1,4 +1,3 @@
--- MODERN Neovim 0.11+ LSP Setup with vtsls for better TypeScript performance
 return {
 	{
 		"neovim/nvim-lspconfig",
@@ -13,7 +12,7 @@ return {
 
 			vim.lsp.handlers["textDocument/publishDiagnostics"] =
 				vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
-					update_in_insert = false, -- Don't update while typing
+					update_in_insert = false,
 					underline = true,
 					virtual_text = {
 						spacing = 4,
@@ -34,10 +33,9 @@ return {
 							includePackageJsonAutoImports = "off",
 						},
 						tsserver = {
-							maxTsServerMemory = 8192, -- Limit memory usage
-							useSyntaxServer = "auto", -- Use separate syntax server for better performance
+							maxTsServerMemory = 8192,
+							useSyntaxServer = "auto",
 						},
-						-- Disable inlay hints for performance
 						inlayHints = {
 							parameterNames = { enabled = "none" },
 							parameterTypes = { enabled = false },
@@ -53,7 +51,6 @@ return {
 						preferences = {
 							importModuleSpecifier = "shortest",
 						},
-						-- Same inlay hints settings for JavaScript
 						inlayHints = {
 							parameterNames = { enabled = "none" },
 							parameterTypes = { enabled = false },
@@ -64,7 +61,7 @@ return {
 					},
 					vtsls = {
 						enableMoveToFileCodeAction = true,
-						autoUseWorkspaceTsdk = true, -- Use project's TypeScript version
+						autoUseWorkspaceTsdk = true,
 					},
 				},
 			})
@@ -140,7 +137,6 @@ return {
 				lua = { "stylua" },
 				python = { "black" },
 				php = { "php_cs_fixer" },
-				zig = { "zigfmt" },
 			},
 			format_on_save = { lsp_fallback = true },
 		},
