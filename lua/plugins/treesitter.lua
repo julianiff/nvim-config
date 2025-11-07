@@ -30,6 +30,7 @@ return {
 					"yaml",
 					"go",
 					"tsx",
+					"regex",
 				},
 				highlight = { enable = true },
 				indent = { enable = true },

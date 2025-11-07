@@ -4,6 +4,19 @@ return {
 	lazy = false,
 	---@type snacks.Config
 	opts = {
+		gh = {
+			-- your gh configuration comes here
+			-- or leave it empty to use the default settings
+			-- refer to the configuration section below
+		},
+		picker = {
+			sources = {
+				gh_pr = {
+					-- your gh_pr picker configuration comes here
+					-- or leave it empty to use the default settings
+				},
+			},
+		},
 		bigfile = { enabled = true },
 		dashboard = {
 			enabled = true,
@@ -30,7 +43,13 @@ return {
 		},
 	},
 	keys = {
-
+		{
+			"<leader>gp",
+			function()
+				Snacks.picker.gh_pr({ author = "julianiff" })
+			end,
+			desc = "GitHub Pull Requests (open)",
+		},
 		{
 			"<leader>lg",
 			function()
@@ -49,6 +68,14 @@ return {
 					.option("background", { off = "light", on = "dark", name = "Dark Background" })
 					:map("<leader>ub")
 				Snacks.toggle.indent():map("<leader>ug")
+			end,
+		})
+		vim.api.nvim_create_autocmd("User", {
+			pattern = "OilActionsPost",
+			callback = function(event)
+				if event.data.actions[1].type == "move" then
+					Snacks.rename.on_rename_file(event.data.actions[1].src_url, event.data.actions[1].dest_url)
+				end
 			end,
 		})
 	end,
