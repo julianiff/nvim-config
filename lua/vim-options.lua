@@ -35,6 +35,13 @@ vim.g.have_nerd_font = true
 vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]], { desc = "Copy to system clipboard" })
 vim.keymap.set("n", "<leader>Y", [["+Y]], { desc = "Copy line to system clipboard" })
 
+-- Copy current file path (relative to project root) to clipboard
+vim.keymap.set("n", "<leader>cp", function()
+	local path = vim.fn.expand("%")
+	vim.fn.setreg("+", path)
+	vim.notify("Copied: " .. path)
+end, { desc = "[C]opy file [p]ath to clipboard" })
+
 -- Quicklist keymaps
 vim.keymap.set("n", "<leader>q", ":copen<CR>", { desc = "[Q]uickfix list open" })
 vim.keymap.set("n", "<leader>qc", ":cclose<CR>", { desc = "[Q]uickfix list [c]lose" })
