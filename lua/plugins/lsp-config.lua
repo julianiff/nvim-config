@@ -133,6 +133,7 @@ return {
 			vim.lsp.enable("lua_ls")
 			vim.lsp.enable("phpactor")
 			vim.lsp.enable("pyright")
+			vim.lsp.enable("gleam")
 
 			vim.keymap.set("n", "K", vim.lsp.buf.hover)
 			vim.keymap.set("n", "gd", vim.lsp.buf.definition)
