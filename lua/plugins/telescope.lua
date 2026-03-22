@@ -54,13 +54,13 @@ return {
 			end
 			require("telescope").load_extension("refactoring")
 
-			vim.keymap.set("n", "<C-p>", find_files, { desc = "Telescope - Files" })
-			vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "Telescope - Content" })
-			vim.keymap.set("n", "<leader>s", builtin.grep_string, { desc = "Telescope - Word under cursor" })
-			vim.keymap.set("n", "<leader>bb", builtin.buffers, { desc = "Telescope - Buffers" })
-			vim.keymap.set("n", "<leader><leader>", builtin.oldfiles, { desc = "Telescope - recently opened files" })
-			vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "Telescope help tags" })
-			vim.keymap.set("n", "<leader>fd", diagnostics, { desc = "Telescope - diagnostics" })
+			-- vim.keymap.set("n", "<C-o>", find_files, { desc = "Telescope - Files" })
+			-- vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "Telescope - Content" })
+			-- vim.keymap.set("n", "<leader>s", builtin.grep_string, { desc = "Telescope - Word under cursor" })
+			-- vim.keymap.set("n", "<leader>bb", builtin.buffers, { desc = "Telescope - Buffers" })
+			-- vim.keymap.set("n", "<leader><leader>", builtin.oldfiles, { desc = "Telescope - recently opened files" })
+			-- vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "Telescope help tags" })
+			-- vim.keymap.set("n", "<leader>fd", diagnostics, { desc = "Telescope - diagnostics" })
 			vim.keymap.set({ "n", "x" }, "<leader>rr", refactoring, { desc = "Telescope - refactoring" })
 		end,
 	},

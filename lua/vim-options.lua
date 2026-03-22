@@ -24,8 +24,6 @@ vim.keymap.set("n", "<c-l>", "<C-w>l")
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
 vim.keymap.set("n", "<C-u>", "<C-u>zz")
 
-vim.cmd("set number relativenumber")
-
 -- Set <space> as the leader keyV
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
@@ -58,10 +56,10 @@ vim.keymap.set({ "n", "i" }, "œ", "<M-q>", { remap = true })
 vim.keymap.set({ "n", "v" }, "<leader>w", ":w<CR>", { silent = true })
 
 -- Make line numbers default
-vim.opt.number = true
+vim.opt.number = false
 -- You can also add relative line numbers, to help with jumping.
 --  Experiment for yourself to see if you like it!
-vim.opt.showmode = false
+vim.opt.showmode = true
 
 -- Sync clipboard between OS and Neovim.
 --  Schedule the setting after `UiEnter` because it can increase startup-time.
@@ -82,7 +80,7 @@ vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
 -- Keep signcolumn on by default
-vim.opt.signcolumn = "yes"
+vim.opt.signcolumn = "yes:1"
 
 -- Decrease update time
 vim.opt.updatetime = 250

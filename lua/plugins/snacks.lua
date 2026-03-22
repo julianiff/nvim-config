@@ -10,12 +10,48 @@ return {
 			-- refer to the configuration section below
 		},
 		picker = {
-			sources = {
-				gh_pr = {
-					-- your gh_pr picker configuration comes here
-					-- or leave it empty to use the default settings
+			layouts = {
+				custom_ivy = {
+					layout = {
+						box = "vertical",
+						backdrop = true,
+						row = -1,
+						width = 0,
+						height = 0.85,
+						border = "none",
+						title = " {title} {live} {flags} ",
+						title_pos = "center",
+						{
+							win = "input",
+							height = 1,
+							border = "bottom",
+							wo = {
+								winhighlight = "NormalFloat:Normal,FloatBorder:Normal",
+							},
+						},
+						{
+							box = "horizontal",
+							{
+								win = "list",
+								border = "none",
+								wo = {
+									winhighlight = "NormalFloat:Normal",
+								},
+							},
+							{
+								win = "preview",
+								title = "{preview}",
+								width = 0.6,
+								border = "left",
+								wo = {
+									winhighlight = "NormalFloat:Normal,FloatBorder:Normal",
+								},
+							},
+						},
+					},
 				},
 			},
+			layout = "custom_ivy",
 		},
 		bigfile = { enabled = true },
 		dashboard = {
@@ -43,6 +79,78 @@ return {
 		},
 	},
 	keys = {
+		{
+			"<leader>fg",
+			function()
+				Snacks.picker.grep({
+					format = function(item, picker)
+						local line = item.line
+						item.line = nil
+						local ret = require("snacks.picker.format").file(item, picker)
+						item.line = line
+						return ret
+					end,
+				})
+			end,
+			desc = "Live Grep",
+		},
+		{
+			"<leader>s",
+			function()
+				Snacks.picker.grep_word({
+					format = function(item, picker)
+						local line = item.line
+						item.line = nil
+						local ret = require("snacks.picker.format").file(item, picker)
+						item.line = line
+						return ret
+					end,
+				})
+			end,
+			desc = "Word under cursor",
+		},
+		{
+			"<leader>bb",
+			function()
+				Snacks.picker.buffers()
+			end,
+			desc = "Buffers",
+		},
+		{
+			"<leader><leader>",
+			function()
+				Snacks.picker.recent()
+			end,
+			desc = "Recent Files",
+		},
+		{
+			"<leader>fh",
+			function()
+				Snacks.picker.help()
+			end,
+			desc = "Help Tags",
+		},
+		{
+			"<leader>fd",
+			function()
+				Snacks.picker.diagnostics_buffer()
+			end,
+			desc = "Buffer Diagnostics",
+		},
+		{
+			"<C-p>",
+			function()
+				Snacks.picker.files()
+			end,
+			desc = "Find Files",
+		},
+		{
+			"<leader>z",
+			function()
+				Snacks.zen()
+			end,
+			desc = "Zen mode",
+		},
 		{
 			"<leader>gp",
 			function()
