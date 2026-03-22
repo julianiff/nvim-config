@@ -145,13 +145,6 @@ return {
 			desc = "Find Files",
 		},
 		{
-			"<leader>z",
-			function()
-				Snacks.zen()
-			end,
-			desc = "Zen mode",
-		},
-		{
 			"<leader>gp",
 			function()
 				Snacks.picker.gh_pr({ author = "julianiff" })
