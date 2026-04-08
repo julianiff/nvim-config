@@ -119,9 +119,9 @@ return {
 		{
 			"<leader><leader>",
 			function()
-				Snacks.picker.recent()
+				Snacks.picker.recent({ filter = { cwd = true } })
 			end,
-			desc = "Recent Files",
+			desc = "Recent Files (cwd)",
 		},
 		{
 			"<leader>fh",
