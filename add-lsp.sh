@@ -1,7 +1,7 @@
 #!/bin/bash
 
 pnpm add -g @vtsls/language-server
-pnpm add -g vscode-langservers-extracted
+pnpm add -g oxlint
 pnpm add -g typescript-language-server typescript
 pnpm add -g pyright
 pnpm add -g @fsouza/prettierd

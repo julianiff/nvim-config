@@ -66,14 +66,15 @@ return {
 				},
 			})
 
-			vim.lsp.config("eslint", {
-				cmd = { "vscode-eslint-language-server", "--stdio" },
+			local oxlint_on_attach = vim.lsp.config.oxlint.on_attach
+			vim.lsp.config("oxlint", {
 				capabilities = capabilities,
-				on_attach = on_attach,
-				settings = {
-					run = "onSave", -- Only run on save for better performance
-					workingDirectory = { mode = "location" },
-				},
+				on_attach = function(client, bufnr)
+					if oxlint_on_attach then
+						oxlint_on_attach(client, bufnr)
+					end
+					on_attach(client, bufnr)
+				end,
 			})
 
 			vim.lsp.config("gopls", {
@@ -128,7 +129,7 @@ return {
 			})
 
 			vim.lsp.enable("vtsls")
-			vim.lsp.enable("eslint")
+			vim.lsp.enable("oxlint")
 			vim.lsp.enable("gopls")
 			vim.lsp.enable("lua_ls")
 			vim.lsp.enable("phpactor")
