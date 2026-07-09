@@ -57,6 +57,12 @@ vim.keymap.set({ "n", "v" }, "<leader>w", ":w<CR>", { silent = true })
 
 -- Make line numbers default
 vim.opt.number = false
+vim.keymap.set({ "n" }, "<leader>lns", function()
+	vim.opt.number = true
+end, { silent = true })
+vim.keymap.set({ "n" }, "<leader>lnh", function()
+	vim.opt.number = false
+end, { silent = true })
 -- You can also add relative line numbers, to help with jumping.
 --  Experiment for yourself to see if you like it!
 vim.opt.showmode = true
