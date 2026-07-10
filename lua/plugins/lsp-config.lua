@@ -6,7 +6,7 @@ return {
 			require("fidget").setup({})
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-			local on_attach = function(client)
+			local on_attach = function(client, _)
 				client.server_capabilities.documentFormattingProvider = false
 			end
 

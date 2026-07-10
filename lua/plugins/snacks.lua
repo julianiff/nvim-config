@@ -1,3 +1,15 @@
+-- Renders grep results as file entries only, hiding the matched line text.
+---@param item snacks.picker.Item
+---@param picker snacks.Picker
+---@return snacks.picker.Highlight[]
+local function file_only_format(item, picker)
+	local line = item.line
+	item["line"] = nil
+	local ret = require("snacks.picker.format").file(item, picker)
+	item["line"] = line
+	return ret
+end
+
 return {
 	"folke/snacks.nvim",
 	priority = 1000,
@@ -14,7 +26,7 @@ return {
 				custom_ivy = {
 					layout = {
 						box = "vertical",
-						backdrop = true,
+						backdrop = 1,
 						row = -1,
 						width = 0,
 						height = 0.85,
@@ -82,39 +94,23 @@ return {
 		{
 			"<leader>fg",
 			function()
-				Snacks.picker.grep({
-					format = function(item, picker)
-						local line = item.line
-						item.line = nil
-						local ret = require("snacks.picker.format").file(item, picker)
-						item.line = line
-						return ret
-					end,
-				})
+				Snacks.picker.grep({ format = file_only_format })
 			end,
 			desc = "Live Grep",
 		},
 		{
 			"<leader>s",
 			function()
-				Snacks.picker.grep_word({
-					format = function(item, picker)
-						local line = item.line
-						item.line = nil
-						local ret = require("snacks.picker.format").file(item, picker)
-						item.line = line
-						return ret
-					end,
-				})
+				Snacks.picker.grep_word({ format = file_only_format })
 			end,
 			desc = "Word under cursor",
 		},
 		{
 			"<leader>bb",
 			function()
-				Snacks.picker.buffers()
+				Snacks.picker.buffers({ modified = true })
 			end,
-			desc = "Buffers",
+			desc = "Modified Buffers",
 		},
 		{
 			"<leader><leader>",
