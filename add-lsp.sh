@@ -17,8 +17,6 @@ brew install lua-language-server
 # Stylua
 brew install stylua
 
-# Python
-pip install --user black
 
 # PHP
 composer global require friendsofphp/php-cs-fixer

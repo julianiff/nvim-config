@@ -10,17 +10,16 @@ return {
 				client.server_capabilities.documentFormattingProvider = false
 			end
 
-			vim.lsp.handlers["textDocument/publishDiagnostics"] =
-				vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
-					update_in_insert = false,
-					underline = true,
-					virtual_text = {
-						spacing = 4,
-						source = "if_many",
-					},
-					signs = true,
-					severity_sort = true,
-				})
+			vim.diagnostic.config({
+				update_in_insert = false,
+				underline = true,
+				virtual_text = {
+					spacing = 4,
+					source = "if_many",
+				},
+				signs = true,
+				severity_sort = true,
+			})
 
 			vim.lsp.config("vtsls", {
 				cmd = { "vtsls", "--stdio" },

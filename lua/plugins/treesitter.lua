@@ -1,139 +1,175 @@
+-- nvim-treesitter's `main` branch is a rewrite with no module system: the
+-- plugin only installs parsers and ships queries, and every feature
+-- (highlighting, indentation, textobjects) is wired up here by hand.
+local ensure_installed = {
+	"bash",
+	"gitcommit",
+	"gitignore",
+	"go",
+	"json",
+	"lua",
+	"markdown",
+	"php",
+	"phpdoc",
+	"regex",
+	"tsx",
+	"vim",
+	"vimdoc",
+	"yaml",
+}
+
+-- x/o-mode textobjects, from queries/<lang>/textobjects.scm
+local select_keymaps = {
+	["af"] = "@function.outer",
+	["if"] = "@function.inner",
+	["ac"] = "@class.outer",
+	["ic"] = "@class.inner",
+	["aa"] = "@parameter.outer",
+	["ia"] = "@parameter.inner",
+	["ab"] = "@block.outer",
+	["ib"] = "@block.inner",
+	["ai"] = "@conditional.outer",
+	["ii"] = "@conditional.inner",
+	["al"] = "@loop.outer",
+	["il"] = "@loop.inner",
+	["a/"] = "@comment.outer",
+	["am"] = "@call.outer",
+	["im"] = "@call.inner",
+	["as"] = "@statement.outer",
+	["is"] = "@statement.inner",
+	["arh"] = "@assignment.rhs",
+	["alh"] = "@assignment.lhs",
+	["a="] = "@assignment.outer",
+	["i="] = "@assignment.inner",
+}
+
+local move_keymaps = {
+	goto_next_start = {
+		["]f"] = "@function.outer",
+		["]c"] = "@class.outer",
+		["]i"] = "@conditional.outer",
+		["]l"] = "@loop.outer",
+		["]a"] = "@parameter.outer",
+	},
+	goto_next_end = {
+		["]F"] = "@function.outer",
+		["]C"] = "@class.outer",
+		["]I"] = "@conditional.outer",
+		["]L"] = "@loop.outer",
+	},
+	goto_previous_start = {
+		["[f"] = "@function.outer",
+		["[c"] = "@class.outer",
+		["[i"] = "@conditional.outer",
+		["[l"] = "@loop.outer",
+		["[a"] = "@parameter.outer",
+	},
+	goto_previous_end = {
+		["[F"] = "@function.outer",
+		["[C"] = "@class.outer",
+		["[I"] = "@conditional.outer",
+		["[L"] = "@loop.outer",
+	},
+}
+
 return {
 	{
 		"nvim-treesitter/nvim-treesitter",
+		branch = "main",
+		lazy = false, -- the rewrite does not support lazy-loading
 		build = ":TSUpdate",
-		dependencies = {
-			"nvim-treesitter/nvim-treesitter-context",
-			"nvim-treesitter/nvim-treesitter-textobjects",
-		},
 		config = function()
-			require("treesitter-context").setup({
-				enable = false,
-			})
+			local ts = require("nvim-treesitter")
 
-			local config = require("nvim-treesitter.configs")
-			config.setup({
-				modules = {},
-				auto_install = true,
-				sync_install = true,
-				ignore_install = {},
-				ensure_installed = {
-					"bash",
-					"gitcommit",
-					"gitignore",
-					"json",
-					"lua",
-					"markdown",
-					"php",
-					"vim",
-					"vimdoc",
-					"yaml",
-					"go",
-					"tsx",
-					"regex",
-				},
-				highlight = { enable = true },
-				indent = { enable = true },
-				textobjects = {
-					lsp_interop = {
-						enable = true,
-						border = "none",
-						floating_preview_opts = {},
-						peek_definition_code = {
-							["<leader>df"] = "@function.outer",
-							["<leader>dF"] = "@class.outer",
-						},
-					},
-					select = {
-						enable = true,
-						lookahead = true, -- Automatically jump forward to textobj
-						keymaps = {
-							-- Functions
-							["af"] = "@function.outer", -- Around function
-							["if"] = "@function.inner", -- Inside function
+			ts.setup({})
+			ts.install(ensure_installed)
 
-							-- Classes/structures
-							["ac"] = "@class.outer", -- Around class
-							["ic"] = "@class.inner", -- Inside class
+			local available = nil ---@type string[]?
 
-							-- Arguments/parameters
-							["aa"] = "@parameter.outer", -- Around argument
-							["ia"] = "@parameter.inner", -- Inside argument
+			local function start(buf, lang)
+				if not vim.treesitter.language.add(lang) then
+					return false
+				end
+				vim.treesitter.start(buf, lang)
+				if vim.treesitter.query.get(lang, "indents") then
+					vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+				end
+				return true
+			end
 
-							-- Code blocks
-							["ab"] = "@block.outer", -- Around block
-							["ib"] = "@block.inner", -- Inside block
+			vim.api.nvim_create_autocmd("FileType", {
+				group = vim.api.nvim_create_augroup("treesitter-start", { clear = true }),
+				callback = function(args)
+					local lang = vim.treesitter.language.get_lang(args.match)
+					if not lang or start(args.buf, lang) then
+						return
+					end
 
-							-- Conditionals
-							["ai"] = "@conditional.outer", -- Around if
-							["ii"] = "@conditional.inner", -- Inside if
-
-							-- Loops
-							["al"] = "@loop.outer", -- Around loop
-							["il"] = "@loop.inner", -- Inside loop
-
-							-- Comments
-							["a/"] = "@comment.outer", -- Around comment
-
-							-- Function calls
-							["am"] = "@call.outer", -- Around method call
-							["im"] = "@call.inner", -- Inside method call
-
-							-- Statements
-							["as"] = "@statement.outer", -- Around statement
-							["is"] = "@statement.inner",
-
-							-- Assignments
-							["arh"] = "@assignment.rhs", -- Around assignment
-							["alh"] = "@assignment.lhs", -- Around assignment
-							["a="] = "@assignment.outer", -- Around assignment
-							["i="] = "@assignment.inner", -- Inside assignment
-						},
-					},
-
-					move = {
-						enable = true,
-						set_jumps = true, -- Add to jumplist
-						goto_next_start = {
-							["]f"] = "@function.outer", -- Next function start
-							["]c"] = "@class.outer", -- Next class start
-							["]i"] = "@conditional.outer", -- Next if statement start
-							["]l"] = "@loop.outer", -- Next loop start
-							["]a"] = "@parameter.outer", -- Next parameter start
-						},
-						goto_next_end = {
-							["]F"] = "@function.outer", -- Next function end
-							["]C"] = "@class.outer", -- Next class end
-							["]I"] = "@conditional.outer", -- Next if statement end
-							["]L"] = "@loop.outer", -- Next loop end
-						},
-						goto_previous_start = {
-							["[f"] = "@function.outer", -- Previous function start
-							["[c"] = "@class.outer", -- Previous class start
-							["[i"] = "@conditional.outer", -- Previous if statement start
-							["[l"] = "@loop.outer", -- Previous loop start
-							["[a"] = "@parameter.outer", -- Previous parameter start
-						},
-						goto_previous_end = {
-							["[F"] = "@function.outer", -- Previous function end
-							["[C"] = "@class.outer", -- Previous class end
-							["[I"] = "@conditional.outer", -- Previous if statement end
-							["[L"] = "@loop.outer", -- Previous loop end
-						},
-					},
-
-					-- Swap elements (rearranging code)
-					swap = {
-						enable = true,
-						swap_next = {
-							["<leader>sa"] = "@parameter.inner", -- Swap with next parameter
-						},
-						swap_previous = {
-							["<leader>sA"] = "@parameter.inner", -- Swap with previous parameter
-						},
-					},
-				},
+					-- stand-in for the old `auto_install`: pull the parser in,
+					-- then highlight the buffer that asked for it
+					available = available or ts.get_available()
+					if not vim.tbl_contains(available, lang) then
+						return
+					end
+					ts.install(lang):await(function()
+						vim.schedule(function()
+							if vim.api.nvim_buf_is_valid(args.buf) then
+								start(args.buf, lang)
+							end
+						end)
+					end)
+				end,
 			})
 		end,
+	},
+
+	{
+		"nvim-treesitter/nvim-treesitter-textobjects",
+		branch = "main",
+		dependencies = { "nvim-treesitter/nvim-treesitter" },
+		event = "VeryLazy",
+		config = function()
+			require("nvim-treesitter-textobjects").setup({
+				select = {
+					lookahead = true, -- automatically jump forward to textobj
+				},
+				move = {
+					set_jumps = true, -- add to jumplist
+				},
+			})
+
+			local select = require("nvim-treesitter-textobjects.select")
+			for lhs, query in pairs(select_keymaps) do
+				vim.keymap.set({ "x", "o" }, lhs, function()
+					select.select_textobject(query, "textobjects")
+				end, { desc = "Select " .. query })
+			end
+
+			local move = require("nvim-treesitter-textobjects.move")
+			for fn, keymaps in pairs(move_keymaps) do
+				for lhs, query in pairs(keymaps) do
+					vim.keymap.set({ "n", "x", "o" }, lhs, function()
+						move[fn](query, "textobjects")
+					end, { desc = fn:gsub("_", " ") .. " " .. query })
+				end
+			end
+
+			local swap = require("nvim-treesitter-textobjects.swap")
+			vim.keymap.set("n", "<leader>sa", function()
+				swap.swap_next("@parameter.inner")
+			end, { desc = "Swap with next parameter" })
+			vim.keymap.set("n", "<leader>sA", function()
+				swap.swap_previous("@parameter.inner")
+			end, { desc = "Swap with previous parameter" })
+		end,
+	},
+
+	{
+		"nvim-treesitter/nvim-treesitter-context",
+		main = "treesitter-context",
+		event = "VeryLazy",
+		opts = {
+			enable = false,
+		},
 	},
 }

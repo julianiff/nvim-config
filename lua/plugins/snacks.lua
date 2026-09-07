@@ -148,6 +148,22 @@ return {
 			desc = "GitHub Pull Requests (open)",
 		},
 		{
+			"<leader>rr",
+			function()
+				-- select_refactor() goes through vim.ui.select, which telescope-ui-select
+				-- owns globally; render just this one with the snacks picker
+				local ui_select = vim.ui.select
+				vim.ui.select = Snacks.picker.select
+				local ok, err = pcall(require("refactoring").select_refactor)
+				vim.ui.select = ui_select
+				if not ok then
+					error(err)
+				end
+			end,
+			mode = { "n", "x" },
+			desc = "Refactor",
+		},
+		{
 			"<leader>lg",
 			function()
 				Snacks.lazygit()
