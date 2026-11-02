@@ -93,17 +93,34 @@ return {
 				},
 			})
 
+			local function find_psalm(root)
+				for _, rel in ipairs({ "vendor-tools/psalm/vendor/bin/psalm", "vendor/bin/psalm" }) do
+					local bin = root and vim.fs.joinpath(root, rel)
+					if bin and vim.uv.fs_access(bin, "X") then
+						return bin
+					end
+				end
+			end
+
 			vim.lsp.config("phpactor", {
 				cmd = { "phpactor", "language-server" },
 				capabilities = capabilities,
 				on_attach = on_attach,
 				init_options = {
+					["language_server.enable_trust_check"] = false,
+					["language_server_configuration.auto_config"] = false,
 					["language_server_phpstan.enabled"] = false,
-					["language_server_psalm.enabled"] = true,
 					["prophecy.enabled"] = true,
 					["phpunit.enabled"] = true,
 					["language_server_completion.trim_leading_dollar"] = true,
 				},
+				before_init = function(params, config)
+					local psalm = find_psalm(config.root_dir)
+					params.initializationOptions = vim.tbl_extend("force", params.initializationOptions or {}, {
+						["language_server_psalm.enabled"] = psalm ~= nil,
+						["language_server_psalm.bin"] = psalm,
+					})
+				end,
 				settings = {
 					phpactor = {
 						completion = {
