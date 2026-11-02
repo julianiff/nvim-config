@@ -163,4 +163,5 @@ local function compare_to_clipboard()
 	))
 end
 
-vim.keymap.set("x", "<leader>d", compare_to_clipboard)
+-- vim.keymap.set("x", "<leader>d", compare_to_clipboard)
+vim.keymap.set("n", "<leader>br", "<cmd>checktime<cr>", { desc = "Reload buffers changed on disk" })
